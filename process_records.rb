@@ -21,7 +21,52 @@
 # How much of a bonus did each employee get?
 
 # BONUS - uses classes for each shipment; but not necessary
+# open("planet_express_logs").each do |line|
+#   p line.chomp
+# end
 
-open("planet_express_logs").each do |line|
-  p line.chomp
+def get_record(line)
+  words = []
+  word = ""
+  planex = line.chomp.chars
+  planex.each do |x|
+    if x == ","
+      words << word
+      word = ""
+    else
+      word = word + x
+    end
+  end
+  words << word
+  return words
 end
+
+records = []
+open("planet_express_logs").each do |line|
+  record = get_record(line)
+  p record
+  records << record
+end
+
+p records
+
+hash_records = []
+records.each do |record|
+
+  hash_records << {
+    planet: record[0],
+    cargo: record[1],
+    num_cargo: record[2].to_i,
+    revenue: record[3].to_i
+  }
+end
+
+p hash_records
+total_revenue = 0
+
+hash_records.each do |hash|
+    p hash[:revenue]
+    total_revenue = total_revenue + hash[:revenue]
+end
+
+p total_revenue
